@@ -24,6 +24,7 @@ The following example demonstrates opening a WebSocket by URL. The connection
 may also be opened with `open_websocket(…)`, which takes a host, port, and
 resource as arguments.
 
+```python
     import trio
     from trio_websocket import open_websocket_url
 
@@ -36,6 +37,7 @@ resource as arguments.
             logging.error('Connection attempt failed: %s', ose)
 
     trio.run(main)
+```
 
 A more detailed example is in `examples/client.py`. **Note:** if you want to run
 this example client with SSL, you'll need to install the `trustme` module from
@@ -49,12 +51,12 @@ A WebSocket server requires a bind address, a port, and a coroutine to handle
 incoming connections. This example demonstrates an "echo server" that replies
 to each incoming message with an identical outgoing message.
 
+```python
     import trio
-    from trio_websocket import WebSocketServer, ConnectionClosed
+    from trio_websocket import serve_websocket, ConnectionClosed
 
     async def main():
-        server = WebSocketServer(echo_server, '127.0.0.1', 8000, ssl_context=None)
-        await server.listen()
+        await serve_websocket(echo_server, '127.0.0.1', 8000, ssl_context=None)
 
     async def echo_server(websocket):
         while True:
@@ -65,6 +67,7 @@ to each incoming message with an identical outgoing message.
                 break
 
     trio.run(main)
+```
 
 A longer example is in `examples/server.py`. **See the note above about using
 SSL with the example client.**
